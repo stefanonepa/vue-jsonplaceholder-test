@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <h1>UserID: {{userId}}</h1>
+    <button @click="fetch">reload</button>
     <posts :postsData="posts" @remove="removePost"></posts>
   </div>
 </template>
@@ -24,17 +25,20 @@ export default {
     removePost (index) {
       this.posts = this.posts.filter((x, i) => i !== index)
       // this.posts.splice(index, 1)
+    },
+    fetch () {
+      let that = this
+      axios.get('https://jsonplaceholder.typicode.com/posts?userId=' + that.userId)
+      .then(function (response) {
+        that.posts = response.data
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
     }
   },
   created () {
-    let that = this
-    axios.get('https://jsonplaceholder.typicode.com/posts?userId=' + that.userId)
-    .then(function (response) {
-      that.posts = response.data
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
+    this.fetch()
   }
 }
 </script>
