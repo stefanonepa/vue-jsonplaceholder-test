@@ -2,9 +2,9 @@
   <div class="postDetails">
     <div>PostId: {{postData.id}}</div>
     <div>Body: {{postData.body}}</div>
-    <div class="postDetails--commentlink" @click="showComments = !showComments">Comments: {{ comments.length }}</div>
+    <div class="postDetails--commentlink" @click="postData.showComments = !postData.showComments">Comments: {{ postData.comments.length }}</div>
     <transition name="fade">
-      <comments :commentsData="comments" v-if="showComments"></comments>
+      <comments :commentsData="postData.comments" v-if="postData.showComments"></comments>
     </transition>
   </div>
 </template>
@@ -15,17 +15,12 @@
   export default {
     props: ['postData'],
     components: {Comments},
-    data () {
-      return {
-        comments: [],
-        showComments: false
-      }
-    },
     mounted () {
       let that = this
       axios.get('https://jsonplaceholder.typicode.com/comments?postId=' + that.postData.id)
       .then(function (response) {
-        that.comments = response.data
+        that.postData.comments = response.data
+        // that.comments = response.data
       })
       .catch(function (error) {
         console.log(error)

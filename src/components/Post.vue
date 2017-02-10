@@ -1,9 +1,9 @@
 <template>
   <div class="post">
-    <h2 @click="showDetails = !showDetails">{{postData.title}}</h2>
+    <h2 @click="postData.showDetails = !postData.showDetails">{{postData.title}}</h2>
     <button @click="remove">remove</button>
     <transition name="fade">
-      <post-details :postData="postData" v-if="showDetails"></post-details>
+      <post-details :postData="postData" v-if="postData.showDetails"></post-details>
     </transition>
   </div>
 </template>
@@ -13,11 +13,6 @@
   export default {
     components: {PostDetails},
     props: ['postData'],
-    data () {
-      return {
-        showDetails: false
-      }
-    },
     methods: {
       remove () {
         this.$emit('remove')

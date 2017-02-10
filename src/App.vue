@@ -30,7 +30,12 @@ export default {
       let that = this
       axios.get('https://jsonplaceholder.typicode.com/posts?userId=' + that.userId)
       .then(function (response) {
-        that.posts = response.data
+        that.posts = response.data.map((post) => {
+          post.showDetails = false
+          post.showComments = false
+          post.comments = []
+          return post
+        })
       })
       .catch(function (error) {
         console.log(error)
